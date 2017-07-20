@@ -3,15 +3,14 @@ package com.rgerwig.adserver.dao;
 
 import com.rgerwig.adserver.model.AdCampaign;
 
-import javax.json.JsonObject;
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class AdCampaignCache {
 
     /** singleton */
-    private static final Map<String, AdCampaign> adCampaignCache = new LinkedHashMap<>();
+    private static final Map<String, AdCampaign> adCampaignCache = new ConcurrentHashMap<>();
 
     /**
      * Private to prevent multiple instantiation

@@ -12,7 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("ads")
+@Path("ad")
 @Consumes(MediaType.APPLICATION_JSON)
 public class AdCampaignService {
 
@@ -75,9 +75,7 @@ public class AdCampaignService {
             response =Response.status(201).entity(AdCampaignFactory.adCampaignToJsonObject(campaign)).build();
         } else {
             //only one active per partner
-           response = Response.status(409).entity("Only one active advertising campaign is allowed per partner. " +
-                   "Your existing campaign is included in this response.")
-                   .entity(AdCampaignFactory.adCampaignToJsonObject(AdCampaignCache.get(campaign.getPartnerId()))).build();
+           response = Response.status(409).entity("Only one active advertising campaign is allowed per partner.").build();
         }
         return response;
     }
