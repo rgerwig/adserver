@@ -30,10 +30,6 @@ public class AdCampaignServiceTest {
         Assert.assertTrue(response!=null);
         Assert.assertTrue(response.getStatus()==200);
         Assert.assertTrue(response.hasEntity());
-
-        //System.out.println("testGetActiveCampaign");
-        //System.out.println(response.toString());
-        //System.out.println(response.getEntity().toString());
     }
 
     @Test
@@ -53,8 +49,7 @@ public class AdCampaignServiceTest {
         Response response = service.get("rgerwig");
         Assert.assertTrue(response!=null);
         Assert.assertTrue(response.getStatus()==200);
-        //System.out.println("testGetNoCampaignForPartnerId");
-        //System.out.println(response.toString());
+
     }
 
     @Test
@@ -74,8 +69,7 @@ public class AdCampaignServiceTest {
         Response response = service.get("rgerwig_deactivated");
         Assert.assertTrue(response!=null);
         Assert.assertTrue(response.getStatus()==200);
-        //System.out.println("testNoActiveCampaignForPartnerId");
-        //System.out.println(response.toString());
+
     }
 
     @Test
@@ -117,9 +111,6 @@ public class AdCampaignServiceTest {
         Assert.assertTrue(response!=null);
         Assert.assertTrue(response.hasEntity());
         Assert.assertTrue(response.getStatus()==409);
-        //System.out.println("testOnlyOneAdCampaignPerPartner");
-        //System.out.println(response.toString());
-        //System.out.println(response.getEntity().toString());
     }
 
     @Test
@@ -132,8 +123,6 @@ public class AdCampaignServiceTest {
 
         Assert.assertTrue(response!=null);
 
-        //System.out.println("testGetAllAdCampaigns");
-        //System.out.println(response.toString());
     }
 
 
