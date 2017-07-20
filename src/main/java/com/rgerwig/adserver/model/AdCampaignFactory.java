@@ -47,12 +47,12 @@ public class AdCampaignFactory {
      * @return JsonObject representing the AdCampaign
      */
     public static JsonObject adCampaignToJsonObject(AdCampaign campaign){
-        JsonObject json = Json.createObjectBuilder()
+        JsonObject json = Json.createObjectBuilder().add("ad",Json.createObjectBuilder()
                 .add(PARTNER_ID, campaign.getPartnerId())
                 .add(DURATION, campaign.getDuration())
                 .add(AD_CONTENT, campaign.getAdContent())
                 .add(CREATION_TIME, campaign.getCreationTime())
-                .build();
+                .build()).build();
 
         return json;
     }
