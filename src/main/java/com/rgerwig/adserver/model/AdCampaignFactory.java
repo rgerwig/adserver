@@ -5,6 +5,9 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.core.Response;
 
+/**
+ * Factory for validating and creating AdCampaign instances
+ */
 public class AdCampaignFactory {
 
     //statics for json name value pairs

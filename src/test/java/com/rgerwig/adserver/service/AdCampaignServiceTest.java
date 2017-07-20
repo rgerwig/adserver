@@ -47,7 +47,7 @@ public class AdCampaignServiceTest {
 
         Response response = service.get("rgerwig");
         Assert.assertTrue(response!=null);
-        Assert.assertTrue(response.getStatus()==200);
+        Assert.assertTrue(response.getStatus()==404);
 
     }
 
@@ -121,5 +121,43 @@ public class AdCampaignServiceTest {
 
     }
 
+    @Test
+    public void testUpdateAdCampaignPerPartner(){
+        JsonObject json = Json.createObjectBuilder()
+                .add(AdCampaignFactory.PARTNER_ID, "rgerwig_dup")
+                .add(AdCampaignFactory.DURATION,330002)
+                .add(AdCampaignFactory.AD_CONTENT, "Content to display for the advertising campaign.")
+                .build();
 
+        AdCampaignService service = new AdCampaignService();
+
+        //add new campaign
+        Response response = service.add(json);
+
+        //update the same one
+        response = service.update(json);
+        Assert.assertTrue(response!=null);
+        Assert.assertTrue(response.hasEntity());
+        Assert.assertTrue(response.getStatus()==201);
+    }
+
+    @Test
+    public void testDeleteCampaign(){
+
+        JsonObject json = Json.createObjectBuilder()
+                .add(AdCampaignFactory.PARTNER_ID, "rgerwig_delete")
+                .add(AdCampaignFactory.DURATION,330002)
+                .add(AdCampaignFactory.AD_CONTENT, "Content to display for the advertising campaign.")
+                .build();
+
+        AdCampaignService service = new AdCampaignService();
+
+        //add new campaign
+        service.add(json);
+
+        Response response = service.delete("rgerwig_delete");
+        Assert.assertTrue(response!=null);
+        Assert.assertTrue(response.getStatus()==501);
+        Assert.assertTrue(response.hasEntity());
+    }
 }

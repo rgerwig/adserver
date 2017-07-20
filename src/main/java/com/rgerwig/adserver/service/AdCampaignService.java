@@ -5,13 +5,16 @@ import com.rgerwig.adserver.model.AdCampaign;
 import com.rgerwig.adserver.model.AdCampaignFactory;
 
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+
+/**
+ * Service invoked when someone sends a request to /ad url
+ */
 @Path("ad")
 @Consumes(MediaType.APPLICATION_JSON)
 public class AdCampaignService {
@@ -48,12 +51,12 @@ public class AdCampaignService {
 
         if(campaign==null){
           //not found
-          response = Response.status(200).entity("An advertising campaign does not exist for partner_id " + partner_id).build();
+          response = Response.status(Response.Status.NOT_FOUND).entity("An advertising campaign does not exist for partner_id: " + partner_id).build();
         } else if(!campaign.isActive()){
           //return no active campaign
-          response = Response.status(200).entity("The existing campaign is no longer active for partner_id: " + partner_id).build();
+          response = Response.status(Response.Status.OK).entity("The existing campaign is no longer active for partner_id: " + partner_id).build();
         } else {
-          response = Response.status(200).entity(AdCampaignFactory.adCampaignToJsonObject(campaign)).build();
+          response = Response.status(Response.Status.OK).entity(AdCampaignFactory.adCampaignToJsonObject(campaign)).build();
         }
         return response;
     }
@@ -75,13 +78,42 @@ public class AdCampaignService {
             AdCampaign campaign = AdCampaignFactory.jsonToAdCampaign(document);
             if (!AdCampaignCache.exists(campaign.getPartnerId())) {
                 AdCampaignCache.add(campaign);
-                response = Response.status(201).entity(AdCampaignFactory.adCampaignToJsonObject(campaign)).build();
+                response = Response.status(Response.Status.CREATED).entity(AdCampaignFactory.adCampaignToJsonObject(campaign)).build();
             } else {
                 //only one active per partner
-                response = Response.status(409).entity("Only one active advertising campaign is allowed per partner.").build();
+                response = Response.status(Response.Status.CONFLICT).entity("Only one active advertising campaign is allowed per partner.").build();
             }
         }
         return response;
     }
 
+    /**
+     * This will update a partners ad campaign. If no existing campaign is in the cache it
+     * will return status 400 with a message
+     *
+     * @param document JsonObject representing campaign updates
+     * @return Response
+     */
+    @PUT
+    @Path("/{id}")
+    public Response update(JsonObject document) {
+        Response response = AdCampaignFactory.validateAdCampaignJson(document);
+        if(response==null) {
+            AdCampaign campaign = AdCampaignFactory.jsonToAdCampaign(document);
+            if (AdCampaignCache.exists(campaign.getPartnerId())) {
+                AdCampaignCache.add(campaign);
+                response = Response.status(Response.Status.CREATED).entity(AdCampaignFactory.adCampaignToJsonObject(campaign)).build();
+            } else {
+                //cannot update because there is no existing campaign
+                response = Response.status(Response.Status.BAD_REQUEST).entity("An ad campaign does not exist for partner_id: " + campaign.getPartnerId() + ". POST to this url to add a new ad campaign.").build();
+            }
+        }
+        return response;
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response delete(@PathParam("id") final String partner_id) {
+       return Response.status(Response.Status.NOT_IMPLEMENTED).entity("Delete is not currently implemented.").build();
+    }
 }

@@ -7,6 +7,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Singleton for caching the partners ad campaigns
+ */
 public final class AdCampaignCache {
 
     /** singleton */

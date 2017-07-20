@@ -1,7 +1,9 @@
 package com.rgerwig.adserver.model;
 
 
-
+/**
+ * Represents an instance of an AdCampaign
+ */
 public class AdCampaign {
 
     private String ad_content;
