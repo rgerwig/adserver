@@ -8,10 +8,10 @@ import javax.ws.rs.core.Response;
 public class AdCampaignFactory {
 
     //statics for json name value pairs
-    private static String PARTNER_ID = "partner_id";
-    private static String DURATION = "duration";
-    private static String AD_CONTENT = "ad_content";
-    private static String CREATION_TIME = "creation_time";
+    public static String PARTNER_ID = "partner_id";
+    public static String DURATION = "duration";
+    public static String AD_CONTENT = "ad_content";
+    public static String CREATION_TIME = "creation_time";
 
     /**
      * Creates a new AdCampaign instance

@@ -5,7 +5,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
 
 import javax.ws.rs.core.Response;
@@ -16,9 +15,9 @@ public class AdCampaignServiceTest {
     public void testGetActiveCampaign(){
 
         JsonObject json = Json.createObjectBuilder()
-                .add("partner_id", "rgerwig_get")
-                .add("duration",330002)
-                .add("ad_content", "Content to display for the advertising campaign.")
+                .add(AdCampaignFactory.PARTNER_ID, "rgerwig_get")
+                .add(AdCampaignFactory.DURATION,330002)
+                .add(AdCampaignFactory.AD_CONTENT, "Content to display for the advertising campaign.")
                 .build();
 
         AdCampaignService service = new AdCampaignService();
@@ -36,9 +35,9 @@ public class AdCampaignServiceTest {
     public void testNoExistingCampaignForPartnerId(){
 
         JsonObject json = Json.createObjectBuilder()
-                .add("partner_id", "rgerwig_none")
-                .add("duration",330002)
-                .add("ad_content", "Content to display for the advertising campaign.")
+                .add(AdCampaignFactory.PARTNER_ID, "rgerwig_none")
+                .add(AdCampaignFactory.DURATION,330002)
+                .add(AdCampaignFactory.AD_CONTENT, "Content to display for the advertising campaign.")
                 .build();
 
         AdCampaignService service = new AdCampaignService();
@@ -56,9 +55,9 @@ public class AdCampaignServiceTest {
     public void testNoActiveCampaignForPartnerId(){
 
         JsonObject json = Json.createObjectBuilder()
-                .add("partner_id", "rgerwig_deactivated")
-                .add("duration",-330002)
-                .add("ad_content", "Content to display for the advertising campaign.")
+                .add(AdCampaignFactory.PARTNER_ID, "rgerwig_deactivated")
+                .add(AdCampaignFactory.DURATION,-330002)
+                .add(AdCampaignFactory.AD_CONTENT, "Content to display for the advertising campaign.")
                 .build();
 
         AdCampaignService service = new AdCampaignService();
@@ -76,9 +75,9 @@ public class AdCampaignServiceTest {
     public void testAddNewCampaignNoConflicts(){
 
         JsonObject json = Json.createObjectBuilder()
-                .add("partner_id", "rgerwig_add")
-                .add("duration",330002)
-                .add("ad_content", "Content to display for the advertising campaign.")
+                .add(AdCampaignFactory.PARTNER_ID, "rgerwig_add")
+                .add(AdCampaignFactory.DURATION,330002)
+                .add(AdCampaignFactory.AD_CONTENT, "Content to display for the advertising campaign.")
                 .build();
 
         AdCampaignService service = new AdCampaignService();
@@ -93,9 +92,9 @@ public class AdCampaignServiceTest {
     @Test
     public void testOnlyOneAdCampaignPerPartner(){
         JsonObject json = Json.createObjectBuilder()
-                .add("partner_id", "rgerwig_dup")
-                .add("duration",330002)
-                .add("ad_content", "Content to display for the advertising campaign.")
+                .add(AdCampaignFactory.PARTNER_ID, "rgerwig_dup")
+                .add(AdCampaignFactory.DURATION,330002)
+                .add(AdCampaignFactory.AD_CONTENT, "Content to display for the advertising campaign.")
                 .build();
 
         AdCampaignService service = new AdCampaignService();
