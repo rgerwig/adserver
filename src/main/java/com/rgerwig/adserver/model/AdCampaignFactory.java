@@ -3,6 +3,7 @@ package com.rgerwig.adserver.model;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.ws.rs.core.Response;
 
 public class AdCampaignFactory {
 
@@ -55,5 +56,57 @@ public class AdCampaignFactory {
                 .build()).build();
 
         return json;
+    }
+
+    /**
+     * This validates the json document for an incoming AdCampaign
+     *
+     * @param document JsonObject
+     * @return Response containing errors or null if valid
+     */
+    public static Response validateAdCampaignJson(JsonObject document){
+        Response response=null;
+
+        if (document !=null) {
+            StringBuilder buffer = new StringBuilder();
+
+            try {
+                String partner_id = document.getStringValue(PARTNER_ID);
+                if(partner_id.length()==0)
+                    buffer.append("partner_id value cannot be empty ");
+            } catch(Exception e){
+                buffer.append("Invalid partner_id value ");
+            }
+
+            try {
+                document.getIntValue(DURATION);
+            } catch (Exception e){
+                if(buffer.length()> 0)
+                    buffer.append(", ");
+
+                buffer.append("Invalid duration value ");
+            }
+
+            try {
+                String ad_content = document.getStringValue(AD_CONTENT);
+                if(ad_content.length()==0) {
+                    if(buffer.length()> 0)
+                        buffer.append(", ");
+
+                    buffer.append("ad_content value cannot be empty ");
+                }
+            } catch (Exception e){
+                if(buffer.length()> 0)
+                    buffer.append(", ");
+
+                buffer.append("Invalid ad_content value ");
+            }
+            if(buffer.length()>0){
+                response = Response.status(Response.Status.BAD_REQUEST).entity(buffer.toString()).build();
+            }
+        } else {
+           response = Response.status(Response.Status.BAD_REQUEST).entity("Json representing an Ad is required.").build();
+        }
+        return response;
     }
 }

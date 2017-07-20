@@ -88,9 +88,6 @@ public class AdCampaignServiceTest {
         Assert.assertTrue(response!=null);
         Assert.assertTrue(response.hasEntity());
         Assert.assertTrue(response.getStatus()==201);
-        //System.out.println("testAddNewCampaignNoConflicts");
-        //System.out.println(response.toString());
-        //System.out.println(response.getEntity().toString());
     }
 
     @Test
@@ -119,7 +116,7 @@ public class AdCampaignServiceTest {
         AdCampaignService service = new AdCampaignService();
 
         //get campaigns
-        JsonArray response = service.getAll();
+        JsonObject response = service.getAll();
 
         Assert.assertTrue(response!=null);
 

@@ -22,12 +22,14 @@ public class AdCampaignService {
      * @return
      */
     @GET
-    public JsonArray getAll() {
+    public JsonObject getAll() {
         final JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
         for (final AdCampaign campaign : AdCampaignCache.getAll()) {
             arrayBuilder.add(AdCampaignFactory.adCampaignToJsonObject(campaign));
         }
-        return arrayBuilder.build();
+
+        JsonObject json = Json.createObjectBuilder().add("ads", arrayBuilder).build();
+        return json;
     }
 
     /**
@@ -68,14 +70,16 @@ public class AdCampaignService {
      */
     @POST
     public Response add(JsonObject document) {
-        Response response;
-        AdCampaign campaign = AdCampaignFactory.jsonToAdCampaign(document);
-        if(!AdCampaignCache.exists(campaign.getPartnerId())) {
-            AdCampaignCache.add(campaign);
-            response =Response.status(201).entity(AdCampaignFactory.adCampaignToJsonObject(campaign)).build();
-        } else {
-            //only one active per partner
-           response = Response.status(409).entity("Only one active advertising campaign is allowed per partner.").build();
+        Response response = AdCampaignFactory.validateAdCampaignJson(document);
+        if(response==null) {
+            AdCampaign campaign = AdCampaignFactory.jsonToAdCampaign(document);
+            if (!AdCampaignCache.exists(campaign.getPartnerId())) {
+                AdCampaignCache.add(campaign);
+                response = Response.status(201).entity(AdCampaignFactory.adCampaignToJsonObject(campaign)).build();
+            } else {
+                //only one active per partner
+                response = Response.status(409).entity("Only one active advertising campaign is allowed per partner.").build();
+            }
         }
         return response;
     }
